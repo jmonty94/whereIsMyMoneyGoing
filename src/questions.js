@@ -1,5 +1,3 @@
-const { listenerCount } = require("./db/connection");
-
 const options = [
     {
         message: `How would you like to proceed?`,
@@ -97,3 +95,12 @@ const updateEmployeeInfoQuestions = [
         choices: employeeRoster,
     },
 ];
+
+const questionObject = { options,
+    createNewDepartmentQuestion,
+    createNewRoleQuestions,
+    employeeQuestions,
+    updateEmployeeInfoQuestions }
+export {
+questionObject
+}
