@@ -1,4 +1,4 @@
-import { departmentList, allRoles } from "./questionLists.js";
+import { roles, employees, departments } from "./questionLists.js";
 
 
 const options = [
@@ -14,6 +14,7 @@ const options = [
             `View all employees`,
             `Add new employee`,
             `Update an employee`,
+            `Exit`
         ],
     },
 ];
@@ -31,7 +32,7 @@ const createNewRoleQuestions = [
         message: `Please select the department this role will fall under.`,
         name: `department`,
         type: `list`,
-        choices: departmentList,
+        choices: departments,
     },
     {
         message: `Enter title of new role.`,
@@ -61,7 +62,7 @@ const newEmployeeDepartment = [
         message: `Please select the department this employee is apart of`,
         name: `department`,
         type: `list`,
-        choices: departmentList,
+        choices: departments,
     },
 ];
 
@@ -70,52 +71,55 @@ const newEmployeeRole = [
         message: `What is this employee's role?`,
         name: `employeeRole`,
         type: `list`,
-        choices: allRoles,
+        choices: roles,
+    },
+];
+const newEmployeeManager = [
+    {
+        message: `Who is this employee's manager?`,
+        name: `employeeManager`,
+        type: `list`,
+        choices: employees,
+    },
+];
+const updateEmployeeInfoQuestions = [
+    {
+        message: `Please select employee whose info you would like to update.`,
+        name: `employee`,
+        type: `list`,
+        choices: employees,
+    },
+    {
+        message: `Enter updated first name for employee or press enter to skip.`,
+        name: `firstName`,
+        type: `input`,
+    },
+    {
+        message: `Enter updated last name for employee or press enter to skip`,
+        name: `lastName`,
+        type: `input`,
+    },
+    {
+        message: `Select role for employee`,
+        name: `role`,
+        type: `list`,
+        choices: roles,
+    },
+    {
+        message: `Please select this employee's current manager.`,
+        name: `employeeManager`,
+        type: `list`,
+        choices: employees,
     },
 ];
 
-    // {
-    //     message: `Who is this employee's manager?`,
-    //     name: `employeeManager`,
-    //     type: `list`,
-    //     choices: employeeRoster,
-    // },
-// const updateEmployeeInfoQuestions = [
-//     {
-//         message: `Please select employee whose info you would like to update.`,
-//         name: `employee`,
-//         type: list,
-//         choices: employeeRoster,
-//     },
-//     {
-//         message: `Enter updated first name for employee or press enter to skip.`,
-//         name: `firstName`,
-//         type: input,
-//     },
-//     {
-//         message: `Enter updated last name for employee or press enter to skip`,
-//         name: `lastName`,
-//         type: input,
-//     },
-//     {
-//         message: `Select role for employee`,
-//         name: `role`,
-//         type: `list`,
-//         choices: allRoles,
-//     },
-//     {
-//         message: `Please select this employee's current manager.`,
-//         name: `employeeManager`,
-//         type: `list`,
-//         choices: employeeRoster,
-//     },
-// ];
-
-const questionObject = { /*options,
-    createNewDepartmentQuestion,*/
+const questionObject = {
+    options,
+    createNewDepartmentQuestion,
     createNewRoleQuestions,
-    newEmployeeName,/*
-updateEmployeeInfoQuestions */}
+    newEmployeeName,
+    updateEmployeeInfoQuestions
+}
 export {
-questionObject
+    questionObject
 }
