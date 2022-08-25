@@ -1,18 +1,15 @@
 import mysql from "mysql2";
 import inquirer from "inquirer";
-import {connection} from "./db/connection.js";
+import {db} from "./db/connection.js";
 import cTable from "console.table";
-// import {
-// questionObject
-// } from "./src/questions.js";
+import { questionObject } from "./src/questions.js";
+import {initializer} from "./src/questionLists.js"
 
-function getAllDepartments(){
-    connection.query(`SELECT id, name FROM department`, (err, res) => {
-        if(err) {
-            console.log(err);
-        } else {
-            console.table('Current Departments', res);
-        }
+
+async function init(){
+    await initializer();
+    inquirer.prompt(questionObject.newEmployeeName).then((answers) => {
+        
     })
 }
-getAllDepartments()
+init();

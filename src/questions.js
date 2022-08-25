@@ -1,3 +1,6 @@
+import { departmentList, allRoles } from "./questionLists.js";
+
+
 const options = [
     {
         message: `How would you like to proceed?`,
@@ -25,6 +28,12 @@ const createNewDepartmentQuestion = [
 
 const createNewRoleQuestions = [
     {
+        message: `Please select the department this role will fall under.`,
+        name: `department`,
+        type: `list`,
+        choices: departmentList,
+    },
+    {
         message: `Enter title of new role.`,
         name: `name`,
         type: `input`,
@@ -34,14 +43,8 @@ const createNewRoleQuestions = [
         name: `salary`,
         type: `input`,
     },
-    {
-        message: `Please select the department this role will fall under.`,
-        name: `department`,
-        type: `list`,
-        choices: departmentList,
-    },
 ];
-const employeeQuestions = [
+const newEmployeeName = [
     {
         message: `What is this employee's first name?`,
         name: `employeeFirstName`,
@@ -52,55 +55,67 @@ const employeeQuestions = [
         name: `employeeLastName`,
         type: `input`,
     },
+];
+const newEmployeeDepartment = [
+    {
+        message: `Please select the department this employee is apart of`,
+        name: `department`,
+        type: `list`,
+        choices: departmentList,
+    },
+];
+
+const newEmployeeRole = [
     {
         message: `What is this employee's role?`,
         name: `employeeRole`,
         type: `list`,
         choices: allRoles,
     },
-    {
-        message: `Who is this employee's manager?`,
-        name: `employeeManager`,
-        type: `list`,
-        choices: employeeRoster,
-    },
-];
-const updateEmployeeInfoQuestions = [
-    {
-        message: `Please select employee whose info you would like to update.`,
-        name: `employee`,
-        type: list,
-        choices: employeeRoster,
-    },
-    {
-        message: `Enter updated first name for employee or press enter to skip.`,
-        name: `firstName`,
-        type: input,
-    },
-    {
-        message: `Enter updated last name for employee or press enter to skip`,
-        name: `lastName`,
-        type: input,
-    },
-    {
-        message: `Select role for employee`,
-        name: `role`,
-        type: `list`,
-        choices: allRoles,
-    },
-    {
-        message: `Please select this employee's current manager.`,
-        name: `employeeManager`,
-        type: `list`,
-        choices: employeeRoster,
-    },
 ];
 
-const questionObject = { options,
-    createNewDepartmentQuestion,
+    // {
+    //     message: `Who is this employee's manager?`,
+    //     name: `employeeManager`,
+    //     type: `list`,
+    //     choices: employeeRoster,
+    // },
+// const updateEmployeeInfoQuestions = [
+//     {
+//         message: `Please select employee whose info you would like to update.`,
+//         name: `employee`,
+//         type: list,
+//         choices: employeeRoster,
+//     },
+//     {
+//         message: `Enter updated first name for employee or press enter to skip.`,
+//         name: `firstName`,
+//         type: input,
+//     },
+//     {
+//         message: `Enter updated last name for employee or press enter to skip`,
+//         name: `lastName`,
+//         type: input,
+//     },
+//     {
+//         message: `Select role for employee`,
+//         name: `role`,
+//         type: `list`,
+//         choices: allRoles,
+//     },
+//     {
+//         message: `Please select this employee's current manager.`,
+//         name: `employeeManager`,
+//         type: `list`,
+//         choices: employeeRoster,
+//     },
+// ];
+
+const questionObject = { /*options,
+    createNewDepartmentQuestion,*/
     createNewRoleQuestions,
-    employeeQuestions,
-    updateEmployeeInfoQuestions }
+    newEmployeeName,/*
+updateEmployeeInfoQuestions */}
 export {
 questionObject
 }
