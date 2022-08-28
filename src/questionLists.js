@@ -10,6 +10,7 @@ import { contUse } from "./helpers.js";
 
 const departmentArray = [];
 const roleArray = [];
+const filteredRoles = []
 const employeeArray = [];
 
 async function currentDepartments() {
@@ -39,7 +40,6 @@ async function currentRoster() {
         const res = await db.promise().query(`SELECT  employee.id, first_name, last_name, title, name AS department, salary, (SELECT CONCAT(first_name, ' ', last_name) FROM employee AS managers WHERE employee.manager_id = managers.id) AS manager
         FROM    employee, department, role
         WHERE   employee.role_id = role.id AND role.department_id = department.id;`);
-        console.log(res[0]);
         console.table(`\nCurrent Roster`, res[0]);
     } catch (error) {
         console.error(error);
@@ -62,25 +62,27 @@ function departments() {
 async function rolesFiltered(params) {
     try {
         const dept = params
-        const roles = await db.promise().query(`SELECT role.id, title FROM role, department WHERE department.id = ${dept} AND department.id = role.department_id`)
-        const filteredRoles = roles[0];
-        const filteredRoleChoices = [];
-        console.log(filteredRoles);
-        for (let i = 0; i < filteredRoles.length; i++) {
-            const role = {
-                name: filteredRoles[i].getRoleTitle(),
-                value: filteredRoles[i].getRoleId(),
-            };
-            filteredRoleChoices.push(role);
-            console.log(75, filteredRoleChoices);
-        };
-        console.log(filteredRoleChoices);
-        // return filteredRoleChoices;
-
-
-    } catch (error) {
-        
-    }    
+        const roleResults = await db.promise().query(`SELECT role.id, title, salary, department_id FROM role, department WHERE department.id = ${dept} AND department.id = role.department_id;`)
+        for (const roleResult of roleResults[0]) {
+            const role = new Role(roleResult.id, roleResult.title, roleResult.salary, roleResult.department_id);
+            filteredRoles.push(role);
+        }
+        filteredRoleChoices();
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
+function filteredRoleChoices() {
+    const filteredRoleChoices = [];
+    for (let i = 0; i < filteredRoles.length; i++) {
+        const role = {
+            name: filteredRoles[i].getRoleTitle(),
+            value: filteredRoles[i].getRoleId()
+        }
+        filteredRoleChoices.push(role);
+    };
+    return filteredRoleChoices
 }
 function roles() {
     const roleChoices = [];
@@ -95,7 +97,6 @@ function roles() {
 };
 
 function employees() {
-    console.log(37, employeeArray);
     const employees = [];
     for (let i = 0; i < employeeArray.length; i++) {
         const employee = {
@@ -130,4 +131,4 @@ async function initializer() {
 
 };
 
-export { currentDepartments, currentRoles, currentRoster, roles, departments, employees, initializer, departmentArray, rolesFiltered}
+export { currentDepartments, currentRoles, currentRoster, roles, departments, employees, initializer, departmentArray, rolesFiltered, filteredRoleChoices }

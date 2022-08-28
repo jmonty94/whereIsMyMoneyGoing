@@ -22,7 +22,6 @@ function contUse() {
 
 async function createNewDepartment(){
     await inquirer.prompt(questionObject.createNewDepartmentQuestion).then((answer) => {
-        console.log(answer.name);
         const name = answer.name;
         db.promise().query(`INSERT INTO department (name) VALUES ('${name}');`)
     })
@@ -33,7 +32,6 @@ async function createNewDepartment(){
 async function createNewRole() {
     try {
         await inquirer.prompt(questionObject.createNewRoleQuestions).then((answers) => {
-            console.log(answers);
             const title = answers.title;
             const salary = answers.salary;
             const department = answers.department;
@@ -59,13 +57,12 @@ async function addNewEmployee() {
         })
         await inquirer.prompt(questionObject.newEmployeeDepartment).then((answer) => {
             dept = answer.department;
-            rolesFiltered(dept)
         })
-        console.log(63, dept);
-        // await inquirer.prompt(questionObject.newEmployeeRole).then((answer) => {
-        //     console.log(answer);
-        // });
-        console.log(employeeFirstName, employeeLastName, dept);
+        await rolesFiltered(dept)
+        await inquirer.prompt(questionObject.newEmployeeRole).then((answer) => {
+            employeeRole = answer.employeeRole
+        });
+        console.log(employeeFirstName, employeeLastName, dept, employeeRole);
     } catch (error) {
         console.error(error);
     }

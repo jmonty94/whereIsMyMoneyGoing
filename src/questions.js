@@ -1,4 +1,4 @@
-import { roles, employees, departments, rolesFiltered } from "./questionLists.js";
+import { roles, employees, departments, rolesFiltered, filteredRoleChoices,  } from "./questionLists.js";
 
 
 const options = [
@@ -79,7 +79,7 @@ const newEmployeeRole = [
         message: `What is this employee's role?`,
         name: `employeeRole`,
         type: `list`,
-        choices: rolesFiltered,
+        choices: filteredRoleChoices,
     },
 ];
 const newEmployeeManager = [
