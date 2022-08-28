@@ -1,4 +1,4 @@
-import { roles, employees, departments } from "./questionLists.js";
+import { roles, employees, departments, rolesFiltered } from "./questionLists.js";
 
 
 const options = [
@@ -19,6 +19,14 @@ const options = [
     },
 ];
 
+const res = [
+    {
+        message: `Would you like to continue`,
+        name: 'res',
+        type:  `confirm`
+    }
+]
+
 const createNewDepartmentQuestion = [
     {
         message: `Please enter name of new department.`,
@@ -36,13 +44,13 @@ const createNewRoleQuestions = [
     },
     {
         message: `Enter title of new role.`,
-        name: `name`,
+        name: `title`,
         type: `input`,
     },
     {
         message: `Please enter the salary for this new role.`,
         name: `salary`,
-        type: `input`,
+        type: `number`,
     },
 ];
 const newEmployeeName = [
@@ -71,7 +79,7 @@ const newEmployeeRole = [
         message: `What is this employee's role?`,
         name: `employeeRole`,
         type: `list`,
-        choices: roles,
+        choices: rolesFiltered,
     },
 ];
 const newEmployeeManager = [
@@ -100,6 +108,12 @@ const updateEmployeeInfoQuestions = [
         type: `input`,
     },
     {
+        message: `Select the current department for this employee`,
+        name: `department`,
+        type: `list`,
+        choices: departments,
+    },
+    {
         message: `Select role for employee`,
         name: `role`,
         type: `list`,
@@ -115,9 +129,13 @@ const updateEmployeeInfoQuestions = [
 
 const questionObject = {
     options,
+    res,
     createNewDepartmentQuestion,
     createNewRoleQuestions,
     newEmployeeName,
+    newEmployeeDepartment,
+    newEmployeeRole,
+    newEmployeeManager,
     updateEmployeeInfoQuestions
 }
 export {

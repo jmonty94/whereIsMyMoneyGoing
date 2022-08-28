@@ -2,13 +2,24 @@ import { db } from "./../db/connection.js";
 import { Department } from "./../constructors/Department.js";
 import { Employee } from "./../constructors/Employee.js";
 import { Role } from "./../constructors/Role.js";
+import inquirer from "inquirer";
+import { questionObject } from "./questions.js";
+import { init } from "../app.js";
+import { contUse } from "./helpers.js";
+
 
 const departmentArray = [];
 const roleArray = [];
 const employeeArray = [];
 
-function currentDepartments() {
-    console.table(`Current Departments`, departmentArray)
+async function currentDepartments() {
+    try {
+        const res = await db.promise().query(`SELECT * FROM department;`)
+        console.table(`\nCurrent Departments`, res[0])
+    } catch (error) {
+        console.error(error);
+    }
+    contUse();
 };
 
 async function currentRoles() {
@@ -16,10 +27,11 @@ async function currentRoles() {
         const res = await db.promise().query(`SELECT role.id, title, name AS department, salary
       FROM department, role
       WHERE department_id = department.id;`,);
-        console.table(`\nCurrent Roles\n`, res[0]);
+        console.table(`\nCurrent Roles`, res[0]);
     } catch (error) {
         console.error(error);
     }
+    contUse();
 }
 
 async function currentRoster() {
@@ -27,10 +39,12 @@ async function currentRoster() {
         const res = await db.promise().query(`SELECT  employee.id, first_name, last_name, title, name AS department, salary, (SELECT CONCAT(first_name, ' ', last_name) FROM employee AS managers WHERE employee.manager_id = managers.id) AS manager
         FROM    employee, department, role
         WHERE   employee.role_id = role.id AND role.department_id = department.id;`);
-        console.table(`\nCurrent Roster\n`, res[0]);
+        console.log(res[0]);
+        console.table(`\nCurrent Roster`, res[0]);
     } catch (error) {
         console.error(error);
     }
+    contUse()
 }
 
 function departments() {
@@ -45,6 +59,29 @@ function departments() {
     return departmentChoices;
 };
 
+async function rolesFiltered(params) {
+    try {
+        const dept = params
+        const roles = await db.promise().query(`SELECT role.id, title FROM role, department WHERE department.id = ${dept} AND department.id = role.department_id`)
+        const filteredRoles = roles[0];
+        const filteredRoleChoices = [];
+        console.log(filteredRoles);
+        for (let i = 0; i < filteredRoles.length; i++) {
+            const role = {
+                name: filteredRoles[i].getRoleTitle(),
+                value: filteredRoles[i].getRoleId(),
+            };
+            filteredRoleChoices.push(role);
+            console.log(75, filteredRoleChoices);
+        };
+        console.log(filteredRoleChoices);
+        // return filteredRoleChoices;
+
+
+    } catch (error) {
+        
+    }    
+}
 function roles() {
     const roleChoices = [];
     for (let i = 0; i < roleArray.length; i++) {
@@ -93,4 +130,4 @@ async function initializer() {
 
 };
 
-export { currentDepartments, currentRoles, currentRoster, roles, departments, employees, initializer, }
+export { currentDepartments, currentRoles, currentRoster, roles, departments, employees, initializer, departmentArray, rolesFiltered}
