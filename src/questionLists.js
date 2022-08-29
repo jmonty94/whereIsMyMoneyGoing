@@ -108,6 +108,23 @@ function employees() {
     return employees
 }
 
+async function managerRoster(){
+    const managers = [];
+    for (let i = 0; i < employeeArray.length; i++) {
+        const manager = {
+            name: employeeArray[i].getFirstName() + ' ' + employeeArray[i].getLastName(),
+            value: employeeArray[i].getId(),
+        }
+        managers.push(manager);
+    };
+    const noManager = {
+        name: 'None',
+        value: -1
+    }
+    managers.push(noManager);
+    return managers
+}
+
 async function initializer() {
     try {
         const departmentResults = await db.promise().query(`SELECT * FROM department;`);
@@ -131,4 +148,4 @@ async function initializer() {
 
 };
 
-export { currentDepartments, currentRoles, currentRoster, roles, departments, employees, initializer, departmentArray, rolesFiltered, filteredRoleChoices }
+export { currentDepartments, currentRoles, currentRoster, roles, departments, employees, initializer, departmentArray, rolesFiltered, filteredRoleChoices, managerRoster }
