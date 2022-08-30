@@ -1,13 +1,13 @@
-import mysql from "mysql2";
 import inquirer from "inquirer";
-import { db } from "./db/connection.js";
-import cTable, { getTable } from "console.table";
 import { questionObject } from "./src/questions.js";
-import { initializer, currentDepartments, currentRoles, currentRoster } from "./src/questionLists.js"
+import { initializer, currentDepartments, currentRoles, currentRoster, departments, roles, employees } from "./src/questionLists.js"
 import { addNewEmployee, createNewDepartment, createNewRole, updateEmployee } from "./src/helpers.js";
 
 async function init() {
     await initializer();
+    await departments();
+    await roles();
+    await employees();
     inquirer.prompt(questionObject.options).then((answers) => {
         const selection = answers.options
         if (selection === `View all departments`) {

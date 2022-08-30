@@ -1,20 +1,19 @@
 import inquirer from "inquirer";
-import { Role } from "../constructors/Role.js";
 import { db } from "../db/connection.js";
 import { init } from "./../app.js";
-import { initializer, rolesFiltered } from "./questionLists.js";
+import { currentRoster, employees, initializer, managerRoster, rolesFiltered } from "./questionLists.js";
 import { questionObject } from "./questions.js";
 
-function contUse() {
+async function contUse() {
     try {
-        inquirer.prompt(questionObject.res).then((answer) => {
+        await inquirer.prompt(questionObject.res).then((answer) => {
             const res = answer.res;
-            if (res === true) {
-                init();
-            } else {
+            if (res !== true) {
                 process.exit();
-            }
-        })
+            };
+        });
+        await initializer();
+        await init();
     } catch (error) {
         console.error(error);
     }
@@ -30,10 +29,12 @@ async function createNewDepartment() {
         console.error(error);
     }
     await initializer();
+
     contUse();
 };
 
 async function createNewRole() {
+    initializer();
     try {
         await inquirer.prompt(questionObject.createNewRoleQuestions).then((answers) => {
             const title = answers.title;
@@ -50,11 +51,11 @@ async function createNewRole() {
 
 async function addNewEmployee() {
     try {
-        let employeeFirstName = '';
-        let employeeLastName = '';
-        let dept = 1;
-        let employeeRole = '';
-        let employeeManager = '';
+        let employeeFirstName
+        let employeeLastName
+        let dept
+        let employeeRole
+        let employeeManager
         await inquirer.prompt(questionObject.newEmployeeName).then((answers) => {
             employeeFirstName = answers.employeeFirstName;
             employeeLastName = answers.employeeLastName;
@@ -76,33 +77,82 @@ async function addNewEmployee() {
     contUse();
 };
 
+async function updateEmployeeName(id) {
+    let updatedFName
+    let updatedLName
+    await inquirer.prompt(questionObject.updateEmployeeName).then((answers) => {
+        updatedFName = `'${answers.firstName}'`;
+        updatedLName = `'${answers.lastName}'`;
+    });
+    await db.promise().query(`UPDATE employee SET first_name = ${updatedFName}, last_name = ${updatedLName} WHERE id = ${id};`);
+    continueUpdate(id);
+    ;
+}
+
+async function updateRole(id) {
+    let updatedRole;
+    let dept;
+    await inquirer.prompt(questionObject.updateDept).then((answer) => {
+        dept = answer.department;
+    });
+    await rolesFiltered(dept);
+    await inquirer.prompt(questionObject.updateEmployeeRole).then((answer) => {
+        updatedRole = answer.role;
+    });
+    await db.promise().query(`UPDATE employee SET role_id = ${updatedRole} WHERE id = ${id};`);
+    continueUpdate(id);
+};
+
+async function updateManager(id) {
+    await managerRoster();
+    let updatedManager;
+    await inquirer.prompt(questionObject.updateEmployeeManager).then((answer) => {
+        updatedManager = answer.manager
+    })
+    await db.promise().query(`UPDATE employee SET manager_id = ${updatedManager} WHERE id= ${id};`)
+    continueUpdate(id);
+};
+
+async function continueUpdate(id) {
+    await inquirer.prompt(questionObject.continueUpdate).then((answer) => {
+        if (answer.continue === true) {
+            updateOptions(id)
+        } else {
+            contUse()
+        }
+    })
+};
+async function updateOptions(id) {
+    await inquirer.prompt(questionObject.updateQuestion).then((answer) => {
+        const selection = answer.options
+        if (selection === `Employee Name`) {
+            updateEmployeeName(id);
+        } else if (selection === `Employee Role`) {
+            updateRole(id);
+        } else if (selection === `Employee Manager`) {
+            updateManager(id)
+        } else if (selection === `Select Different Employee`) {
+            updateEmployee();
+        };
+    });
+};
+
 async function updateEmployee() {
+    await employees()
     let selectedEmployee = -1
-    let updatedFName = '';
-    let updatedLName = '';
-    let updatedDept = -1;
-    let updatedRole = '';
-    let updatedManager = ''
     try {
-        await inquirer.prompt(questionObject.updateEmployeeName).then((answers) => {
-            selectedEmployee = answers.id;
-            updatedFName = `'${answers.firstName}'`;
-            updatedLName = `'${answers.lastName}'`;
-            updatedDept = answers.department;
+        await inquirer.prompt(questionObject.employeeSelection).then((answer) => {
+            selectedEmployee = answer.id
         })
-        await rolesFiltered(updatedDept)
-        await inquirer.prompt(questionObject.updateEmployeeRole).then((answer) => {
-            updatedRole = answer.role;
-        })
-        await inquirer.prompt(questionObject.updateEmployeeManager).then((answer) => {
-            updatedManager = answer.manager;
-        })
-        await db.promise().query(`UPDATE employee SET first_name = ${updatedFName}, last_name = ${updatedLName}, role_id = ${updatedRole}, manager_id = ${updatedManager} WHERE id= ${selectedEmployee};`)
+        if (selectedEmployee === `Go Back`) {
+            init();
+        } else {
+            await updateOptions(selectedEmployee);
+        };
     } catch (error) {
         console.error(error);
-    }
-    contUse();
-}
+    };
+};
 
 
 

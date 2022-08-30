@@ -1,4 +1,4 @@
-import { roles, employees, departments, rolesFiltered, filteredRoleChoices, managerRoster,  } from "./questionLists.js";
+import { employees, departments, filteredRoleChoices, managerRoster, } from "./questionLists.js";
 
 
 const options = [
@@ -87,16 +87,43 @@ const newEmployeeManager = [
         message: `Who is this employee's manager?`,
         name: `employeeManager`,
         type: `list`,
-        choices: employees,
+        choices: managerRoster,
     },
 ];
-const updateEmployeeName = [
+
+const employeeSelection = [
     {
         message: `Please select employee whose info you would like to update.`,
         name: `id`,
         type: `list`,
         choices: employees,
     },
+];
+
+const updateQuestion = [
+    {
+        message: `What would you like to update?`,
+        name: `options`,
+        type: `list`,
+        choices: [
+            `Employee Name`,
+            `Employee Role`,
+            `Employee Manager`,
+            `Select Different Employee`
+        ]
+    }
+];
+
+const continueUpdate = [
+    {
+        message: `Would you like to continue updating this employee's information?`,
+        name: `continue`,
+        type: `confirm`
+    }
+]
+
+const updateEmployeeName = [
+
     {
         message: `Enter current first name for employee.`,
         name: `firstName`,
@@ -107,6 +134,9 @@ const updateEmployeeName = [
         name: `lastName`,
         type: `input`,
     },
+];
+
+const updateDept = [
     {
         message: `Select the current department for this employee`,
         name: `department`,
@@ -140,9 +170,13 @@ const questionObject = {
     newEmployeeDepartment,
     newEmployeeRole,
     newEmployeeManager,
+    employeeSelection,
+    updateQuestion,
     updateEmployeeName,
+    updateDept,
     updateEmployeeRole,
-    updateEmployeeManager
+    updateEmployeeManager,
+    continueUpdate
 }
 export {
     questionObject
