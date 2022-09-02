@@ -1,7 +1,7 @@
 import inquirer from "inquirer";
-import { db } from "../db/connection.js";
+import { db } from "../config/connection.js";
 import { init } from "./../app.js";
-import { currentRoster, employees, initializer, managerRoster, rolesFiltered } from "./questionLists.js";
+import { employees, initializer, managerRoster, rolesFiltered } from "./questionLists.js";
 import { questionObject } from "./questions.js";
 
 async function contUse() {

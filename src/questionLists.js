@@ -1,4 +1,4 @@
-import { db } from "./../db/connection.js";
+import { db } from "./../config/connection.js";
 import { Department } from "./../constructors/Department.js";
 import { Employee } from "./../constructors/Employee.js";
 import { Role } from "./../constructors/Role.js";

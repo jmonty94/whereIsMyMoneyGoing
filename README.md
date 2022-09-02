@@ -57,7 +57,7 @@ THEN I am prompted to select an employee to update and their new role and this i
 
 ### Links
 ​
-- [Live Demo](https://drive.google.com/file/d/1LgyQfwu-ex4wCkPmWe-sOSnfxVVAq9xp/view)
+- [Live Demo](https://drive.google.com/file/d/14oBZD6nXW4J3or1HNqLd2ZrV1_eitDnX/view)
 
 ## Installation
 
@@ -69,18 +69,20 @@ npm i
 ​
 ### Environmental Variables
 
+To set up your environmental variables please create a .env file in the root and paste the following code into it and fill in your DB username and password in the empty spots for each 
+
 ```
-DB_NAME
-DB_USER
-DB_PASSWORD
+DB_NAME=employees_db
+DB_USER=
+DB_PASSWORD=
 ```
 
 ### Seed Test Data
 
-In MySql terminal please input the following commands or copy and paste the schema and then the seeds into MySQL workbench
+To create the database and seed if please sign into MySQL using mysql -u (insert username for MySQL) -p and then input your password at the following prompt. Once logged into MySQL in your MySQL terminal please input the following commands or copy and paste the schema and then the seeds into MySQL workbench
 ```
-source ./model/schema.sql
-source ./model/seeds.sql
+source ./db/schema.sql
+source ./db/seeds.sql
 ```
 
 ## My process
